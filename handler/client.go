@@ -81,7 +81,7 @@ func (c *Client) readPump() {
 		if err != nil {
 			log.Printf("error: %v", err)
 		}
-		c.hub.broadcast <- res
+		c.send <- res
 	}
 }
 
