@@ -91,7 +91,6 @@ func (c *Client) call(req []byte) (message []byte, err error) {
 	if err != nil {
 		return
 	}
-	res := make(map[string]interface{})
 	// 获取设备信息
 	if deviceInfo, ok := r["deviceInfo"]; ok {
 		c.deviceInfo = deviceInfo.(string)
@@ -107,6 +106,7 @@ func (c *Client) call(req []byte) (message []byte, err error) {
 	if re, ok := r["request"]; ok {
 		request = re.(map[string]interface{})
 	}
+	res := make(map[string]interface{})
 	err = client.Call(context.TODO(), env.Getenv("MICRO_API_NAMESPACE", "go.micro.api.")+service, method, &request, &res, cli.WithContentType("application/json"))
 	// 后期通过登录函数 返回token写入 debug
 	if token, ok := res["token"]; ok {
