@@ -2,7 +2,6 @@ package handler
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net/http"
 
@@ -30,11 +29,11 @@ func Register(service web.Service) {
 	})
 	go func() {
 		srv := micro.NewService(
-			micro.Name(env.Getenv("MICRO_API_NAMESPACE", "go.micro.srv.")+"websocket"),
+			micro.Name(env.Getenv("MICRO_SRV_NAMESPACE", "go.micro.srv.")+"websocket"),
 			micro.Version("latest"),
 		)
 		srv.Init()
-		fmt.Println(srv)
+
 		sub := &Subscriber{
 			hub: hub,
 		}

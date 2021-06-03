@@ -6,6 +6,7 @@ import (
 	"github.com/micro/go-micro/v2/util/log"
 	"github.com/micro/go-micro/v2/web"
 
+	"github.com/lecex/core/env"
 	_ "github.com/lecex/core/plugins"
 	"github.com/lecex/websocket/config"
 	"github.com/lecex/websocket/handler"
@@ -16,6 +17,7 @@ func main() {
 	service := web.NewService(
 		web.Name(Conf.Name),
 		web.Version(Conf.Version),
+		web.Address(env.Getenv("SERVER_ADDRESS", ":8082")),
 	)
 	service.Init()
 	// 注册服务
