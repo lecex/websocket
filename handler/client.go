@@ -51,8 +51,10 @@ type Client struct {
 	send chan []byte
 	// X-CSRF-Token
 	token string
+	// 用户ID
+	UserId string
 	// 设备信息
-	deviceInfo string
+	DeviceInfo string
 }
 
 // readPump pumps messages from the websocket connection to the hub.
@@ -93,7 +95,7 @@ func (c *Client) call(req []byte) (message []byte, err error) {
 	}
 	// 获取设备信息
 	if deviceInfo, ok := r["deviceInfo"]; ok {
-		c.deviceInfo = deviceInfo.(string)
+		c.DeviceInfo = deviceInfo.(string)
 	}
 	var service, method string
 	if s, ok := r["service"]; ok {

@@ -14,7 +14,7 @@ api:
 	micro api  --handler=api  --namespace=go.micro.api --address=:8081
 .PHONY: web
 web:
-	micro api  --handler=web  --namespace=go.micro.api --address=:8082
+	micro api  --handler=web  --namespace=go.micro.web --address=:8082
 
 .PHONY: proto
 proto:

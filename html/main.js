@@ -17,7 +17,7 @@ window.addEventListener("load", function (evt) {
             print('<span style="color: green;">Connection Open</span>');
 
             var info = {
-                deviceInfo:"TXAP12107000994ND002112",
+                deviceInfo:"TXAP12107000994ND002113",
                 service:'user-api',
                 method:'Auth.Auth',
                 request:{
