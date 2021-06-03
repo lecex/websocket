@@ -20,11 +20,11 @@ type Subscriber struct {
 
 // Register 注册
 func Register(service web.Service) {
-	service.Handle("/websocket/", http.StripPrefix("/websocket/", http.FileServer(http.Dir("html"))))
+	service.Handle("/", http.StripPrefix("/", http.FileServer(http.Dir("html"))))
 	hub := newHub()
 	go hub.run()
 	// websocket interface
-	service.HandleFunc("/websocket/hi", func(w http.ResponseWriter, r *http.Request) {
+	service.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
 		serveWs(hub, w, r)
 	})
 	go func() {

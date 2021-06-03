@@ -1,5 +1,5 @@
 window.addEventListener("load", function (evt) {
-    var wsUri = "ws://localhost:8082/websocket/hi"
+    var wsUri = "ws://localhost:8082/ws"
     var output = document.getElementById("output");
     var nameTxt = document.getElementById("name");
     var ws;
