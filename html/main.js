@@ -1,9 +1,8 @@
 window.addEventListener("load", function (evt) {
-    var wsUri = "ws.xilewanggou.com/ws"
+    var wsUri = "ws://ws.xilewanggou.com/ws"
     var output = document.getElementById("output");
     var nameTxt = document.getElementById("name");
     var ws;
-
     var print = function (message) {
         var d = document.createElement("div");
         d.innerHTML = message;
