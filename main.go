@@ -17,7 +17,7 @@ func main() {
 	service := web.NewService(
 		web.Name(Conf.Name),
 		web.Version(Conf.Version),
-		web.Address(env.Getenv("SERVER_ADDRESS", ":8082")),
+		web.Address(env.Getenv("SERVER_ADDRESS", ":8080")),
 	)
 	service.Init()
 	// 注册服务
