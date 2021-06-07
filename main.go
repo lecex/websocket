@@ -3,7 +3,7 @@ package main
 import (
 	// 公共引入
 
-	"github.com/micro/go-micro/v2/registry/"
+	"github.com/micro/go-micro/v2/registry"
 	"github.com/micro/go-micro/v2/util/log"
 	"github.com/micro/go-micro/v2/web"
 
@@ -19,7 +19,7 @@ func main() {
 		web.Name(Conf.Name),
 		web.Version(Conf.Version),
 		web.Address(env.Getenv("SERVER_ADDRESS", ":8082")),
-		web.Registry(registry.NewRegistry()),
+		web.Registry(registry.NewRegistry()), // 默认注册
 	)
 	service.Init()
 	// 注册服务
