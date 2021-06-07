@@ -14,5 +14,5 @@ import (
 //	Description // 权限解释
 var Conf config.Config = config.Config{
 	Name:    env.Getenv("MICRO_WEB_NAMESPACE", "go.micro.web.") + "websocket",
-	Version: "v1.3.2",
+	Version: "v1.3.3",
 }

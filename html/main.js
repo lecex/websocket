@@ -1,5 +1,5 @@
 window.addEventListener("load", function (evt) {
-    var wsUri = "ws://ws.xilewanggou.com/ws"
+    var wsUri = "ws://127.0.0.1:8082/ws"
     var output = document.getElementById("output");
     var nameTxt = document.getElementById("name");
     var ws;
