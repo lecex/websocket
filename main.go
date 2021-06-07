@@ -3,7 +3,7 @@ package main
 import (
 	// 公共引入
 
-	"github.com/micro/go-micro/registry"
+	"github.com/micro/go-micro/v2/registry/"
 	"github.com/micro/go-micro/v2/util/log"
 	"github.com/micro/go-micro/v2/web"
 
