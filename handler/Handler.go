@@ -31,7 +31,7 @@ func Register(service web.Service) {
 		srv := micro.NewService(
 			micro.Name(env.Getenv("MICRO_SRV_NAMESPACE", "go.micro.srv.")+"websocket"),
 			micro.Version("latest"),
-			micro.Address(env.Getenv("MICRO_SERVER_ADDRESS", ":8989")),
+			micro.Address(env.Getenv("SERVER_SRV_ADDRESS", ":8989")),
 		)
 		srv.Init()
 
