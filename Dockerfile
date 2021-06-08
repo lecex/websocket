@@ -13,3 +13,4 @@ RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 COPY --from=builder /go/src/github.com/bxxinshiji/websocket/bin/websocket /usr/local/bin/
 CMD ["websocket"]
 EXPOSE 8080
+EXPOSE 8989
