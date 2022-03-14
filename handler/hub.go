@@ -7,10 +7,14 @@ package handler
 import (
 	"encoding/json"
 	"strings"
+	"time"
 
+	"github.com/go-redis/redis"
 	"github.com/micro/go-micro/v2/util/log"
+	newRedis "github.com/lecex/websocket/providers/redis"
 
 	pb "github.com/lecex/core/proto/event"
+	"github.com/lecex/pay/service/util"
 )
 
 // Hub maintains the set of active clients and broadcasts messages to the
@@ -27,6 +31,7 @@ type Hub struct {
 
 	// Unregister requests from clients.
 	unregister chan *Client
+	Redis      *redis.Client
 }
 
 func newHub() *Hub {
@@ -36,6 +41,7 @@ func newHub() *Hub {
 		register:   make(chan *Client),
 		unregister: make(chan *Client),
 		clients:    make(map[*Client]bool),
+		Redis:      newRedis.NewClient()
 	}
 }
 
@@ -60,6 +66,14 @@ func (h *Hub) run() {
 						send = true
 					}
 				}
+				lock := &util.Lock{
+					Redis: srv.Redis,
+				}
+				if !lock.Set(event.Lock, 15*24*time.Hour) {
+					log.Error(event.Lock + ":被锁定15天")
+					send = false
+				}
+
 				if send {
 					b, err := json.Marshal(event)
 					if err != nil {
