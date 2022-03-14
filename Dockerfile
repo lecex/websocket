@@ -1,5 +1,10 @@
 FROM bigrocs/golang-gcc:1.13 as builder
 
+ARG ACCES_STOKEN
+RUN apk add git
+RUN go env -w GOPRIVATE=github.com/lecex,github.com/bigrocs
+RUN git config --global url."https://bigrocs:${ACCES_STOKEN}@github.com".insteadOf "https://github.com"
+
 WORKDIR /go/src/github.com/lecex/websocket
 COPY . .
 
