@@ -12,7 +12,7 @@ import (
 	"github.com/micro/go-micro/v2/web"
 )
 
-const topic = "websocket"
+const topic = "event"
 
 type Subscriber struct {
 	hub *Hub
@@ -40,7 +40,7 @@ func Register(service web.Service) {
 		}
 		micro.RegisterSubscriber(topic, srv.Server(), sub)
 		if err := srv.Run(); err != nil {
-			log.Fatalf("srv run error: %v\n", err)
+			log.Fatalf("websocketSubscriberSrv run error: %v\n", err)
 		}
 	}()
 }
