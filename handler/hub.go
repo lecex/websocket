@@ -9,12 +9,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/go-redis/redis"
-	"github.com/micro/go-micro/v2/util/log"
-	newRedis "github.com/lecex/websocket/providers/redis"
-
 	pb "github.com/lecex/core/proto/event"
-	"github.com/lecex/pay/service/util"
+
+	"github.com/go-redis/redis"
+	newRedis "github.com/lecex/websocket/providers/redis"
+	"github.com/lecex/websocket/service/util"
+	"github.com/micro/go-micro/v2/util/log"
 )
 
 // Hub maintains the set of active clients and broadcasts messages to the
@@ -41,7 +41,7 @@ func newHub() *Hub {
 		register:   make(chan *Client),
 		unregister: make(chan *Client),
 		clients:    make(map[*Client]bool),
-		Redis:      newRedis.NewClient()
+		Redis:      newRedis.NewClient(),
 	}
 }
 
@@ -66,12 +66,15 @@ func (h *Hub) run() {
 						send = true
 					}
 				}
-				lock := &util.Lock{
-					Redis: srv.Redis,
-				}
-				if !lock.Set(event.Lock, 15*24*time.Hour) {
-					log.Error(event.Lock + ":被锁定15天")
-					send = false
+				// 执行锁
+				if event.Lock != "" {
+					lock := &util.Lock{
+						Redis: h.Redis,
+					}
+					if !lock.Set("Websocket:"+event.Lock, 15*24*time.Hour) {
+						log.Error("Websocket:" + event.Lock + ":被锁定15天")
+						send = false
+					}
 				}
 
 				if send {
