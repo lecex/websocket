@@ -5,7 +5,10 @@
 package handler
 
 import (
+	"encoding/json"
 	"strings"
+
+	"github.com/micro/go-micro/v2/util/log"
 
 	pb "github.com/lecex/core/proto/event"
 )
@@ -52,12 +55,18 @@ func (h *Hub) run() {
 				if strings.Index(event.DeviceInfo, client.DeviceInfo) > -1 && event.DeviceInfo != "" {
 					send = true
 				}
-				if strings.Index(event.UserId, client.UserId) > -1 && event.UserId != "" {
-					send = true
+				if event.UserId != "" && client.UserId != "" {
+					if strings.Index(event.UserId, client.UserId) > -1 {
+						send = true
+					}
 				}
 				if send {
+					b, err := json.Marshal(event)
+					if err != nil {
+						log.Error("Hub.run.json.Marshal", err)
+					}
 					select {
-					case client.send <- event.Data:
+					case client.send <- b:
 					default:
 						close(client.send)
 						delete(h.clients, client)

@@ -129,7 +129,6 @@ func (c *Client) call(req []byte) (message []byte, err error) {
 	if err != nil {
 		return nil, err
 	}
-	// 后期通过登录函数 返回token写入 debug
 	if u, ok := res["user"]; ok {
 		if i, ok := u.(map[string]interface{})["id"]; ok {
 			c.UserId = i.(string)
