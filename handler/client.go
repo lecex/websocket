@@ -4,12 +4,14 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"log"
+	"fmt"
 	"net/http"
 	"time"
 
 	"github.com/gorilla/websocket"
 	cli "github.com/micro/go-micro/v2/client"
+	"github.com/micro/go-micro/v2/metadata"
+	"github.com/micro/go-micro/v2/util/log"
 
 	client "github.com/lecex/core/client"
 	"github.com/lecex/core/env"
@@ -73,13 +75,13 @@ func (c *Client) readPump() {
 		_, message, err := c.conn.ReadMessage()
 		if err != nil {
 			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
-				log.Printf("error: %v", err)
+				log.Error("error: %v", err)
 			}
 			break
 		}
 		res, err := c.call(message)
 		if err != nil {
-			log.Printf("error: %v", err)
+			log.Error("error: %v", err)
 		}
 		c.send <- res
 	}
@@ -96,21 +98,42 @@ func (c *Client) call(req []byte) (message []byte, err error) {
 		c.DeviceInfo = deviceInfo.(string)
 	}
 	var service, method string
+	if m, ok := r["token"]; ok {
+		c.token = m.(string)
+	}
 	if s, ok := r["service"]; ok {
 		service = s.(string)
 	}
 	if m, ok := r["method"]; ok {
 		method = m.(string)
 	}
-	var request map[string]interface{}
+	if service == "" {
+		return nil, fmt.Errorf("服务不允许为空")
+	}
+	if method == "" {
+		return nil, fmt.Errorf("服务方法不允许为空")
+	}
+	// 构建上下文 context
+	meta := map[string]string{}
+	if c.token != "" {
+		meta["X-Csrf-Token"] = c.token
+	}
+	ctx := metadata.NewContext(context.TODO(), meta)
+	// 上下文构建完成
+	request := map[string]interface{}{}
 	if re, ok := r["request"]; ok {
 		request = re.(map[string]interface{})
 	}
 	res := make(map[string]interface{})
-	err = client.Call(context.TODO(), env.Getenv("MICRO_API_NAMESPACE", "go.micro.api.")+service, method, &request, &res, cli.WithContentType("application/json"))
+	err = client.Call(ctx, env.Getenv("MICRO_API_NAMESPACE", "go.micro.api.")+service, method, &request, &res, cli.WithContentType("application/json"))
+	if err != nil {
+		return nil, err
+	}
 	// 后期通过登录函数 返回token写入 debug
-	if token, ok := res["token"]; ok {
-		c.token = token.(string)
+	if u, ok := res["user"]; ok {
+		if i, ok := u.(map[string]interface{})["id"]; ok {
+			c.UserId = i.(string)
+		}
 	}
 	jsonRes, err := json.Marshal(res)
 	if err != nil {
@@ -170,7 +193,7 @@ func (c *Client) writePump() {
 func serveWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
-		log.Println(err)
+		log.Error(err)
 		return
 	}
 	client := &Client{
