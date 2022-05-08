@@ -76,6 +76,7 @@ func (h *Hub) run() {
 				// }
 
 				if send {
+					log.Info("Websocket:Info:" + event)
 					b, err := json.Marshal(event)
 					if err != nil {
 						log.Error("Hub.run.json.Marshal", err)
