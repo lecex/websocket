@@ -7,13 +7,11 @@ package handler
 import (
 	"encoding/json"
 	"strings"
-	"time"
 
 	pb "github.com/lecex/user/core/proto/event"
 
 	"github.com/go-redis/redis"
 	newRedis "github.com/lecex/websocket/providers/redis"
-	"github.com/lecex/websocket/service/util"
 	"github.com/micro/go-micro/v2/util/log"
 )
 
@@ -67,15 +65,15 @@ func (h *Hub) run() {
 					}
 				}
 				// 执行锁
-				if event.Lock != "" && send {
-					lock := &util.Lock{
-						Redis: h.Redis,
-					}
-					if !lock.Set("Websocket:"+event.Lock, 15*24*time.Hour) {
-						log.Error("Websocket:" + event.Lock + ":被锁定15天")
-						send = false
-					}
-				}
+				// if event.Lock != "" && send {
+				// 	lock := &util.Lock{
+				// 		Redis: h.Redis,
+				// 	}
+				// 	if !lock.Set("Websocket:"+event.Lock, 15*24*time.Hour) {
+				// 		log.Error("Websocket:" + event.Lock + ":被锁定15天")
+				// 		send = false
+				// 	}
+				// }
 
 				if send {
 					b, err := json.Marshal(event)
