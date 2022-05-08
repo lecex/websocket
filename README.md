@@ -19,4 +19,3 @@
 
 ## 依赖模块
 
-- [sql2000](https://github.com/lecex/core)

@@ -2,7 +2,7 @@ package redis
 
 import (
 	"github.com/go-redis/redis"
-	"github.com/lecex/core/env"
+	"github.com/lecex/user/core/env"
 	"github.com/micro/go-micro/v2/util/log"
 )
 

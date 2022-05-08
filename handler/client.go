@@ -13,8 +13,8 @@ import (
 	"github.com/micro/go-micro/v2/metadata"
 	"github.com/micro/go-micro/v2/util/log"
 
-	client "github.com/lecex/core/client"
-	"github.com/lecex/core/env"
+	client "github.com/lecex/user/core/client"
+	"github.com/lecex/user/core/env"
 )
 
 const (

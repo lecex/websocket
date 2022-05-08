@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	pb "github.com/lecex/core/proto/event"
+	pb "github.com/lecex/user/core/proto/event"
 
 	"github.com/go-redis/redis"
 	newRedis "github.com/lecex/websocket/providers/redis"

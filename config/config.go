@@ -1,8 +1,8 @@
 package config
 
 import (
-	"github.com/lecex/core/config"
-	"github.com/lecex/core/env"
+	"github.com/lecex/user/core/config"
+	"github.com/lecex/user/core/env"
 )
 
 // 	Conf 配置

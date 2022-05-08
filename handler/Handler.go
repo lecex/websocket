@@ -5,8 +5,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/lecex/core/env"
-	pb "github.com/lecex/core/proto/event"
+	"github.com/lecex/user/core/env"
+	pb "github.com/lecex/user/core/proto/event"
 
 	"github.com/micro/go-micro/v2"
 	"github.com/micro/go-micro/v2/web"

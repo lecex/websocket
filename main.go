@@ -6,8 +6,8 @@ import (
 	"github.com/micro/go-micro/v2/util/log"
 	"github.com/micro/go-micro/v2/web"
 
-	"github.com/lecex/core/env"
-	_ "github.com/lecex/core/plugins"
+	"github.com/lecex/user/core/env"
+	_ "github.com/lecex/user/core/plugins"
 	"github.com/lecex/websocket/config"
 	"github.com/lecex/websocket/handler"
 )
