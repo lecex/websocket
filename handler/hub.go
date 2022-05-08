@@ -67,7 +67,7 @@ func (h *Hub) run() {
 					}
 				}
 				// 执行锁
-				if event.Lock != "" {
+				if event.Lock != "" && send {
 					lock := &util.Lock{
 						Redis: h.Redis,
 					}
