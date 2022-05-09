@@ -57,6 +57,7 @@ func (h *Hub) run() {
 			for client := range h.clients {
 				send := false
 				if strings.Index(event.DeviceInfo, client.DeviceInfo) > -1 && event.DeviceInfo != "" {
+					log.Info(12112, event.DeviceInfo, client.DeviceInfo, strings.Index(event.DeviceInfo, client.DeviceInfo))
 					send = true
 				}
 				if event.UserId != "" && client.UserId != "" {
