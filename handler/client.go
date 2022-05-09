@@ -96,7 +96,7 @@ func (c *Client) call(req []byte) (message []byte, err error) {
 	// 获取设备信息
 	if deviceInfo, ok := r["deviceInfo"]; ok {
 		c.DeviceInfo = deviceInfo.(string)
-		log,Info*(2233,c.DeviceInfo)
+		log.Info(2233, c.DeviceInfo)
 	}
 	var service, method string
 	if m, ok := r["token"]; ok {
