@@ -94,7 +94,6 @@ func (c *Client) call(req []byte) (message []byte, err error) {
 		return
 	}
 	// 获取设备信息
-	log.Info(2233, r)
 	if deviceInfo, ok := r["deviceInfo"]; ok {
 		c.DeviceInfo = deviceInfo.(string)
 	}
@@ -198,7 +197,7 @@ func serveWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
 	}
 	// 获取header deviceInfo信息
 	deviceInfo := r.Header.Get("deviceInfo")
-	log.Info(deviceInfo)
+	log.Info("注册设备号:", deviceInfo)
 	client := &Client{
 		hub:        hub,
 		conn:       conn,
