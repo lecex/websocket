@@ -196,6 +196,7 @@ func serveWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
 		log.Error(err)
 		return
 	}
+	log.Info(900, w)
 	client := &Client{
 		hub:  hub,
 		conn: conn,
