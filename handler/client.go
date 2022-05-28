@@ -196,13 +196,41 @@ func serveWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// 获取header deviceInfo信息
+	userId := ""
 	deviceInfo := r.Header.Get("deviceInfo")
 	log.Info("注册设备号:", deviceInfo)
+	token := r.Header.Get("token")
+	// 通过token获取userid
+	if token != "" {
+		r := make(map[string]interface{})
+		// 构建上下文 context
+		meta := map[string]string{}
+		meta["X-Csrf-Token"] = token
+		ctx := metadata.NewContext(context.TODO(), meta)
+		// 上下文构建完成
+		request := map[string]interface{}{}
+		if re, ok := r["request"]; ok {
+			request = re.(map[string]interface{})
+		}
+		res := make(map[string]interface{})
+		err = client.Call(ctx, env.Getenv("MICRO_API_NAMESPACE", "go.micro.api.")+"user", "users.info", &request, &res, cli.WithContentType("application/json"))
+		if err != nil {
+			log.Error("通过Token获取商户Userid失败:", err)
+		}
+		if u, ok := res["user"]; ok {
+			if i, ok := u.(map[string]interface{})["id"]; ok {
+				userId = i.(string)
+				log.Info("注册UserId:", userId)
+			}
+		}
+	}
 	client := &Client{
 		hub:        hub,
 		conn:       conn,
 		send:       make(chan []byte, 256),
 		DeviceInfo: deviceInfo,
+		token:      token,
+		UserId:     userId,
 	}
 	client.hub.register <- client
 
