@@ -93,14 +93,7 @@ func (c *Client) call(req []byte) (message []byte, err error) {
 	if err != nil {
 		return
 	}
-	// 获取设备信息
-	if deviceInfo, ok := r["deviceInfo"]; ok {
-		c.DeviceInfo = deviceInfo.(string)
-	}
 	var service, method string
-	if m, ok := r["token"]; ok {
-		c.token = m.(string)
-	}
 	if s, ok := r["service"]; ok {
 		service = s.(string)
 	}
@@ -214,7 +207,7 @@ func serveWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
 			request = re.(map[string]interface{})
 		}
 		res := make(map[string]interface{})
-		err = client.Call(ctx, env.Getenv("MICRO_API_NAMESPACE", "go.micro.api.")+"user", "users.info", &request, &res, cli.WithContentType("application/json"))
+		err = client.Call(ctx, env.Getenv("MICRO_API_NAMESPACE", "go.micro.api.")+"user-api", "users.info", &request, &res, cli.WithContentType("application/json"))
 		if err != nil {
 			log.Error("通过Token获取商户Userid失败:", err)
 		}
