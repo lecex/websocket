@@ -207,7 +207,7 @@ func serveWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
 			request = re.(map[string]interface{})
 		}
 		res := make(map[string]interface{})
-		err = client.Call(ctx, env.Getenv("MICRO_API_NAMESPACE", "go.micro.api.")+"user-api", "users.info", &request, &res, cli.WithContentType("application/json"))
+		err = client.Call(ctx, env.Getenv("MICRO_API_NAMESPACE", "go.micro.api.")+"user-api", "Users.Info", &request, &res, cli.WithContentType("application/json"))
 		if err != nil {
 			log.Error("通过Token获取商户Userid失败:", err)
 		}
