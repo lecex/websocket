@@ -197,7 +197,8 @@ func serveWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
 	}
 	// 获取header deviceInfo信息
 	userId := ""
-	deviceInfo := r.Header.Get("deviceInfo")
+	deviceInfo := ""
+	deviceInfo = r.Header.Get("deviceInfo")
 	log.Info("注册设备号:", deviceInfo)
 	token := r.Header.Get("token")
 	// 通过token获取userid
