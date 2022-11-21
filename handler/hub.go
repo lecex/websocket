@@ -61,12 +61,12 @@ func (h *Hub) run() {
 				clientKey := ""
 				if strings.Index(event.DeviceInfo, client.DeviceInfo) > -1 && event.DeviceInfo != "" && client.DeviceInfo != "" {
 					send = true
-					// clientKey = client.DeviceInfo
+					clientKey = client.DeviceInfo
 				}
 				if event.UserId != "" && client.UserId != "" {
 					if strings.Index(event.UserId, client.UserId) > -1 {
 						send = true
-						// clientKey = client.UserId
+						clientKey = client.UserId
 					}
 				}
 				// 执行锁
