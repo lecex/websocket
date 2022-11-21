@@ -58,12 +58,15 @@ func (h *Hub) run() {
 		case event := <-h.broadcast:
 			for client := range h.clients {
 				send := false
+				clientKey := ""
 				if strings.Index(event.DeviceInfo, client.DeviceInfo) > -1 && event.DeviceInfo != "" && client.DeviceInfo != "" {
 					send = true
+					// clientKey = client.DeviceInfo
 				}
 				if event.UserId != "" && client.UserId != "" {
 					if strings.Index(event.UserId, client.UserId) > -1 {
 						send = true
+						// clientKey = client.UserId
 					}
 				}
 				// 执行锁
@@ -71,8 +74,8 @@ func (h *Hub) run() {
 					lock := &util.Lock{
 						Redis: h.Redis,
 					}
-					if !lock.Set("Websocket:"+event.Lock, 24*time.Hour) {
-						log.Error("Websocket:" + event.Lock + ":被锁定1天")
+					if !lock.Set("Websocket:"+clientKey+":"+event.Lock, 24*time.Hour) {
+						log.Error("Websocket:" + clientKey + ":" + event.Lock + ":被锁定1天")
 						send = false
 					}
 				}
